@@ -1,0 +1,21 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Auction {
+  id        String   @id @map("_id") @db.ObjectId
+  item_id   String
+  seller    String
+  buyer     String
+  timestamp DateTime
+  price     Int
+  extra     Json
+}
