@@ -21,6 +21,7 @@
     "prettier"
   ],
   "rules": {
+    "no-param-reassign": "off",
     "prettier/prettier": "error",
     "camelcase": "off",
     "import/no-unresolved": "error",
