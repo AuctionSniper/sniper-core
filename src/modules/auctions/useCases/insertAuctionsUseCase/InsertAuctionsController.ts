@@ -9,6 +9,7 @@ export type RawAuction = {
   seller: string;
   buyer: string;
   timestamp: number;
+  bin: boolean;
   price: number;
   item_bytes: string;
 };
@@ -23,7 +24,11 @@ export class InsertAuctionsController {
 
     const auctions: Auction[] = [];
 
-    raw_auctions.forEach(raw_auction => auctions.push(transform(raw_auction)));
+    raw_auctions.forEach(async raw_auction => {
+      if (!raw_auction.bin) return;
+
+      auctions.push(await transform(raw_auction));
+    });
 
     const response = await insertAuctionsUseCase.execute(auctions);
 
