@@ -15,7 +15,7 @@ model Auction {
   item_id   String
   seller    String
   buyer     String
-  timestamp DateTime @default(now())
+  timestamp DateTime
   price     Int
   extra     Json
 }
