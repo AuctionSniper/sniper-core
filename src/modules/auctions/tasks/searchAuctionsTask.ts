@@ -24,7 +24,7 @@ export class SearchAuctionsTask {
     setTimeout(
       async () => {
         const { body } = await request(
-          'https://ápi.hypixel.net/skyblock/auctions',
+          'https://api.hypixel.net/skyblock/auctions',
           {
             method: 'GET',
           },
