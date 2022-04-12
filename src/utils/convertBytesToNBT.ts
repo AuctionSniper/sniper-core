@@ -32,14 +32,15 @@ type Extra = {
   hot_potato_count?: number;
   dungeon_item_level?: number;
   power_ability_scroll?: string;
-  color?: string; // Exotics
+  color?: string; // Exotics.
   pet_info?: PetInfo;
   anvil_uses?: number;
   art_of_war_count?: number; // Only one can be applied per weapon, so instead of number (can be 1 or undefined with the raw value of art_of_war_count), will be a boolean.
   ethermerge?: number; // For AOTV and AOTE (57 blocks/61 with tuned transmission), as it can be 1 or undefined, will be a boolean.
   tuned_transmission?: number; // For AOTV and AOTE (12/61 blocks), for 12/61 blocks will be 4 as it is glitched and each tuned tranmission adds 2.
-  new_years_cake?: number; // New Year Cake year
-  year_obtained?: number; // Century Cake Year (100/200)
+  new_years_cake?: number; // New Year Cake year.
+  year_obtained?: number; // Century Cake Year (100/200).
+  captured_player?: string; // Player captured in cake soul.
 };
 
 type ParseGemsResponseType = [gems: Gem[], slots: string[]];
@@ -140,6 +141,7 @@ export async function convert(data: string): Promise<ResponseType> {
       enchantments: parseEnchantments(extraAttributes.enchantments),
       new_years_cake: extraAttributes.new_years_cake,
       year_obtained: extraAttributes.yearObtained,
+      captured_player: extraAttributes.captured_player,
     },
   ];
 }
