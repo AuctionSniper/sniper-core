@@ -1,12 +1,14 @@
-import { Auction } from '@prisma/client';
 import { request } from 'undici';
 
-import { InsertAuctionsController } from '../useCases/insertAuctionsUseCase/InsertAuctionsController';
+import {
+  InsertAuctionsController,
+  RawAuction,
+} from '../useCases/insertAuctionsUseCase/InsertAuctionsController';
 
 interface IResponse {
   success: boolean;
   lastUpdated: number;
-  auctions: Auction[];
+  auctions: RawAuction[];
 }
 
 export class SearchEndedAuctionsTask {
