@@ -38,6 +38,7 @@ type Extra = {
   art_of_war_count?: number; // Only one can be applied per weapon, so instead of number (can be 1 or undefined with the raw value of art_of_war_count), will be a boolean.
   ethermerge?: number; // For AOTV and AOTE (57 blocks/61 with tuned transmission), as it can be 1 or undefined, will be a boolean.
   tuned_transmission?: number; // For AOTV and AOTE (12/61 blocks), for 12/61 blocks will be 4 as it is glitched and each tuned tranmission adds 2.
+  new_years_cake?: number; // Cake year
 };
 
 type ParseGemsResponseType = [gems: Gem[], slots: string[]];
@@ -136,6 +137,7 @@ export async function convert(data: string): Promise<ResponseType> {
       gems,
       unlockedSlots,
       enchantments: parseEnchantments(extraAttributes.enchantments),
+      new_years_cake: extraAttributes.new_years_cake,
     },
   ];
 }
