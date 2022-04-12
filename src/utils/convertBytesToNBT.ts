@@ -40,8 +40,10 @@ type Extra = {
   tuned_transmission?: number; // For AOTV and AOTE (12/61 blocks), for 12/61 blocks will be 4 as it is glitched and each tuned tranmission adds 2.
 };
 
-function parseGems(rawGems): [Gem[], string[]] {
-  if (rawGems === undefined) return undefined;
+type ParseGemsResponseType = [gems: Gem[], slots: string[]];
+
+function parseGems(rawGems): ParseGemsResponseType {
+  if (rawGems === undefined) return [undefined, undefined];
 
   const gems: Gem[] = [];
   const slots: string[] = [];
@@ -68,7 +70,7 @@ function parseGems(rawGems): [Gem[], string[]] {
     }
   });
 
-  return slots.length === 0 ? undefined : [gems, slots];
+  return slots.length === 0 ? [undefined, undefined] : [gems, slots];
 }
 
 function parseEnchantments(rawEnchantments): Enchantment[] {
