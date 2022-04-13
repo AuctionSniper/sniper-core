@@ -73,7 +73,9 @@ function parseGems(rawGems): ParseGemsResponseType {
     }
   });
 
-  return slots.length === 0 ? [undefined, undefined] : [gems, slots];
+  return gems.length === 0 && slots.length === 0
+    ? [undefined, undefined]
+    : [gems, slots];
 }
 
 function parseEnchantments(rawEnchantments): Enchantment[] {
