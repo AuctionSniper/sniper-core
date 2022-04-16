@@ -41,6 +41,9 @@ type Extra = {
   new_years_cake?: number; // New Year Cake year.
   year_obtained?: number; // Century Cake Year (100/200).
   captured_player?: string; // Player captured in cake soul.
+  spider_kills?: number; // Tarantula kills
+  eman_kills?: number; // Enderman kills (final destination)
+  sword_kills?: number; // Sword kills (fel sword, ...)
 };
 
 type ParseGemsResponseType = [gems: Gem[], slots: string[]];
@@ -144,6 +147,9 @@ export async function convert(data: string): Promise<ResponseType> {
       new_years_cake: extraAttributes.new_years_cake,
       year_obtained: extraAttributes.yearObtained,
       captured_player: extraAttributes.captured_player,
+      spider_kills: extraAttributes.spider_kills,
+      eman_kills: extraAttributes.eman_kills,
+      sword_kills: extraAttributes.sword_kills,
     },
   ];
 }
