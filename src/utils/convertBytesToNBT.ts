@@ -44,6 +44,7 @@ type Extra = {
   spider_kills?: number; // Tarantula kills
   eman_kills?: number; // Enderman kills (final destination)
   sword_kills?: number; // Sword kills (fel sword, ...)
+  ability_scroll?: string[]; // Scrolls
 };
 
 type ParseGemsResponseType = [gems: Gem[], slots: string[]];
@@ -150,6 +151,7 @@ export async function convert(data: string): Promise<ResponseType> {
       spider_kills: extraAttributes.spider_kills,
       eman_kills: extraAttributes.eman_kills,
       sword_kills: extraAttributes.sword_kills,
+      ability_scroll: extraAttributes.ability_scroll,
     },
   ];
 }
