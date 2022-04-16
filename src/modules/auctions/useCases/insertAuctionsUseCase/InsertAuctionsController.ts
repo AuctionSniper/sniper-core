@@ -1,5 +1,5 @@
-import { Auction } from '@prisma/client';
-import { transform } from '@utils/convertRawToAuction';
+import { transformAll } from '@utils/convertRawToAuction';
+import log from 'log-beautify';
 import { container } from 'tsyringe';
 
 import { InsertAuctionsUseCase } from './InsertAuctionsUseCase';
@@ -22,15 +22,19 @@ export class InsertAuctionsController {
   async handle({ auctions: raw_auctions }: IRequest) {
     const insertAuctionsUseCase = container.resolve(InsertAuctionsUseCase);
 
-    const auctions: Auction[] = [];
+    const auctions = await transformAll(
+      raw_auctions.filter(raw => {
+        return raw.bin && raw.price >= 500000;
+      }),
+    );
 
-    raw_auctions.forEach(async raw_auction => {
-      if (!raw_auction.bin) return;
-
-      auctions.push(await transform(raw_auction));
-    });
+    log.info(
+      `${raw_auctions.length - auctions.length} auctions removed by filter.`,
+    );
 
     const response = await insertAuctionsUseCase.execute(auctions);
+
+    log.success(`Saved ${response.count} auctions.`);
 
     return response;
   }

@@ -1,3 +1,4 @@
+import log from 'log-beautify';
 import { request } from 'undici';
 
 import {
@@ -33,10 +34,12 @@ export class SearchEndedAuctionsTask {
       if (this.#lastUpdated !== lastUpdated && success && auctions) {
         this.#lastUpdated = lastUpdated;
 
+        log.info(`Found: ${auctions.length} auctions.`);
+
         this.#insertAuctionsController.handle({
           auctions,
         });
       }
-    }, 15 * 1000);
+    }, 45 * 1000);
   };
 }

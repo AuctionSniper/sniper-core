@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 
-import { SearchAuctionsTask } from '@modules/auctions/tasks/searchAuctionsTask';
+// import { SearchAuctionsTask } from '@modules/auctions/tasks/searchAuctionsTask';
+import { SearchEndedAuctionsTask } from '@modules/auctions/tasks/searchEndedAuctionsTask';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 import { Server } from 'socket.io';
 
@@ -27,8 +28,12 @@ io.on('connection', socket => {
   });
 });
 
-const auctionsTask = new SearchAuctionsTask(io);
+const endedAuctionsTask = new SearchEndedAuctionsTask();
 
-auctionsTask.execute();
+endedAuctionsTask.execute();
+
+// const auctionsTask = new SearchAuctionsTask(io);
+
+// auctionsTask.execute();
 
 io.listen(6060);

@@ -16,3 +16,17 @@ export async function transform(raw: RawAuction): Promise<Auction> {
     extra,
   };
 }
+
+export async function transformAll(raws: RawAuction[]): Promise<Auction[]> {
+  const auctions: Auction[] = [];
+
+  await Promise.all(
+    raws.map(async raw => {
+      const auction = await transform(raw);
+
+      auctions.push(auction);
+    }),
+  );
+
+  return auctions;
+}

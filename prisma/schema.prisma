@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Auction {
-  id        String   @id @map("_id") @db.ObjectId
+  id        String   @id @map("_id")
   item_id   String
   seller    String
   buyer     String

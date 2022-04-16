@@ -11,8 +11,9 @@
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules --respawn src/server.ts"
   },
   "dependencies": {
-    "@prisma/client": "^3.12.0",
+    "@prisma/client": "3.12.0",
     "dayjs": "^1.11.0",
+    "log-beautify": "^1.2.0",
     "prismarine-nbt": "^2.2.1",
     "rate-limiter-flexible": "^2.3.6",
     "reflect-metadata": "^0.1.13",
