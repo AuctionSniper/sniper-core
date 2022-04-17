@@ -7,10 +7,7 @@ export async function transform(raw: RawAuction): Promise<Auction> {
   const [slug, extra] = await convert(raw.item_bytes);
 
   return {
-    id: raw.auction_id,
-    seller: raw.seller,
-    buyer: raw.buyer,
-    timestamp: new Date(raw.timestamp),
+    id: undefined,
     price: raw.price,
     item_id: slug,
     extra,

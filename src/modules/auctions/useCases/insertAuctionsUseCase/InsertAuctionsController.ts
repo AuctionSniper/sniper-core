@@ -6,9 +6,6 @@ import { InsertAuctionsUseCase } from './InsertAuctionsUseCase';
 
 export type RawAuction = {
   auction_id: string;
-  seller: string;
-  buyer: string;
-  timestamp: number;
   bin: boolean;
   price: number;
   item_bytes: string;

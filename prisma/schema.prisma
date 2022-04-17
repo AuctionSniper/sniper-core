@@ -11,11 +11,8 @@ datasource db {
 }
 
 model Auction {
-  id        String   @id @map("_id")
-  item_id   String
-  seller    String
-  buyer     String
-  timestamp DateTime
-  price     Int
-  extra     Json
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  item_id String
+  price   Int
+  extra   Json
 }
