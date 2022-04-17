@@ -9,6 +9,36 @@ export class InsertAuctionsUseCase {
       data,
     });
 
+    await prisma.auction.aggregateRaw({
+      pipeline: [
+        {
+          $group: {
+            _id: '$item_id',
+            items: {
+              $push: {
+                price: '$price',
+                extra: '$extra',
+              },
+            },
+          },
+        },
+        {
+          $merge: {
+            into: 'AuctionView',
+            on: '_id',
+            whenMatched: 'replace',
+            whenNotMatched: 'insert',
+          },
+        },
+      ],
+      options: {
+        allowDiskUse: true,
+        cursor: {
+          batchSize: 0,
+        },
+      },
+    });
+
     return response;
   }
 }

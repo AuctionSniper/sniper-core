@@ -58,12 +58,6 @@ export class SearchAuctionsTask {
               raw_auctions: filteredAuctions,
             });
 
-            log.success(
-              `Found ${profitableAuctions.length} profitable auctions.`,
-            );
-
-            console.table(profitableAuctions);
-
             this.#socket.emit('NEW_AUCTIONS', profitableAuctions);
           }
 
