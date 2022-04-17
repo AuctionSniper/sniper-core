@@ -1,10 +1,14 @@
+import log from 'log-beautify';
 import { Server } from 'socket.io';
 import { request } from 'undici';
+
+import { RawAuction } from '../useCases/insertAuctionsUseCase/InsertAuctionsController';
+import { SearchProfitController } from '../useCases/searchProfitUseCase/SearchProfitController';
 
 interface IResponse {
   lastUpdated: number;
   success: boolean;
-  auctions: [];
+  auctions: RawAuction[];
 }
 
 export class SearchAuctionsTask {
@@ -21,6 +25,8 @@ export class SearchAuctionsTask {
         ? 0
         : this.#lastUpdated + 1000 * 60 - Date.now();
 
+    log.warning(`Searching auctions in ${delay / 1000} seconds.`);
+
     setTimeout(
       async () => {
         const { body } = await request(
@@ -35,18 +41,36 @@ export class SearchAuctionsTask {
         if (!success) {
           this.#lastUpdated = undefined;
 
+          log.error('Failed to fetch auctions, trying again.');
+
           await this.execute();
         } else {
           if (!this.#lastUpdated || lastUpdated > this.#lastUpdated) {
             this.#lastUpdated = lastUpdated;
 
-            this.#socket.emit('NEW_AUCTIONS', auctions);
+            const filteredAuctions = auctions.filter(auction => auction.bin);
+
+            log.info(`Found ${filteredAuctions.length} auctions.`);
+
+            const searchProfitController = new SearchProfitController();
+
+            const profitableAuctions = await searchProfitController.handle({
+              raw_auctions: filteredAuctions,
+            });
+
+            log.success(
+              `Found ${profitableAuctions.length} profitable auctions.`,
+            );
+
+            console.table(profitableAuctions);
+
+            this.#socket.emit('NEW_AUCTIONS', profitableAuctions);
           }
 
           await this.execute();
         }
       },
-      delay > 0 ? delay : 200,
+      delay > 0 ? delay : 750,
     );
   };
 }
