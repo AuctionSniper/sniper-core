@@ -16,3 +16,8 @@ model Auction {
   price   Int
   extra   Json
 }
+
+model AuctionView {
+  id    String @id @map("_id")
+  items Json[]
+}
