@@ -25,7 +25,7 @@ export class InsertAuctionsController {
       }),
     );
 
-    log.info(
+    log.warn(
       `${raw_auctions.length - auctions.length} auctions removed by filter.`,
     );
 

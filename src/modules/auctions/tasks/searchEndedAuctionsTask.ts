@@ -34,6 +34,7 @@ export class SearchEndedAuctionsTask {
       if (this.#lastUpdated !== lastUpdated && success && auctions) {
         this.#lastUpdated = lastUpdated;
 
+        log.show('');
         log.info(`Found: ${auctions.length} auctions.`);
 
         this.#insertAuctionsController.handle({
