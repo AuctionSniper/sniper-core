@@ -12,6 +12,11 @@ export class InsertAuctionsUseCase {
     await prisma.auction.aggregateRaw({
       pipeline: [
         {
+          $sort: {
+            price: 1,
+          },
+        },
+        {
           $group: {
             _id: '$item_id',
             items: {
