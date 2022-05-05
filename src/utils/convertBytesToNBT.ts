@@ -21,7 +21,7 @@ type PetInfo = {
   candyUsed: number;
 };
 
-type Extra = {
+export type Extra = {
   uuid: string;
   modifier?: string;
   rarity_upgrades?: number;
@@ -113,6 +113,44 @@ function parsePetInfo(rawPetInfoJson): PetInfo {
     heldItem: rawPetInfo.heldItem,
     candyUsed: rawPetInfo.candyUsed,
   };
+}
+
+export async function isClean(extra: Extra): Promise<boolean> {
+  return (
+    extra.enchantments === [] &&
+    extra.dungeon_item_level === 0 &&
+    extra.gems === [] &&
+    extra.art_of_war_count === 0 &&
+    extra.ethermerge === 0 &&
+    extra.unlockedSlots === [] &&
+    extra.rarity_upgrades === 0 &&
+    extra.hot_potato_count <= 10 &&
+    extra.pet_info === undefined
+  );
+}
+
+export async function getItemID(data: string): Promise<string> {
+  const buffer = Buffer.from(data, 'base64');
+
+  const { parsed } = await nbt.parse(buffer);
+
+  const extraAttributes = nbt.simplify(parsed).i[0].tag.ExtraAttributes;
+
+  return extraAttributes.id;
+}
+
+export async function getItemsID(data: string[]): Promise<string[]> {
+  const keys = [];
+
+  await Promise.all(
+    data.map(async key => {
+      const id = await getItemID(key);
+
+      keys.push(id);
+    }),
+  );
+
+  return keys;
 }
 
 type ResponseType = [slug: string, extra: Extra];

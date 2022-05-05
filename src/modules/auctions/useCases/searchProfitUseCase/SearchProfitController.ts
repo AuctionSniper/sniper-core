@@ -1,21 +1,19 @@
-import { transformAll } from '@utils/convertRawToAuction';
+import { ProfitableAuction } from '@modules/auctions/data/ProfitableAuction';
+import { RawAuction } from '@modules/auctions/data/RawAuction';
 import { container } from 'tsyringe';
 
-import { RawAuction } from '../insertAuctionsUseCase/InsertAuctionsController';
-import { IProfitableAuction, SearchProfitUseCase } from './SearchProfitUseCase';
+import { SearchProfitUseCase } from './SearchProfitUseCase';
 
 interface IRequest {
   raw_auctions: RawAuction[];
 }
 
 export class SearchProfitController {
-  async handle({ raw_auctions }: IRequest): Promise<IProfitableAuction[]> {
-    const validAuctions = await transformAll(raw_auctions);
-
+  async handle({ raw_auctions }: IRequest): Promise<ProfitableAuction[]> {
     const searchProfitUseCase = container.resolve(SearchProfitUseCase);
 
     const auctions = await searchProfitUseCase.execute({
-      auctions: validAuctions,
+      auctions: raw_auctions,
     });
 
     return auctions;

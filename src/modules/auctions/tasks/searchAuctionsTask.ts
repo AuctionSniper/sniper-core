@@ -2,13 +2,20 @@ import log from 'log-beautify';
 import { Server } from 'socket.io';
 import { request } from 'undici';
 
-import { RawAuction } from '../useCases/insertAuctionsUseCase/InsertAuctionsController';
+import { RawAuction } from '../data/RawAuction';
 import { SearchProfitController } from '../useCases/searchProfitUseCase/SearchProfitController';
+
+type AuctionResponse = {
+  uuid: string;
+  starting_bid: number;
+  bin: boolean;
+  item_bytes: string;
+};
 
 interface IResponse {
   lastUpdated: number;
   success: boolean;
-  auctions: RawAuction[];
+  auctions: AuctionResponse[];
 }
 
 export class SearchAuctionsTask {
@@ -48,7 +55,14 @@ export class SearchAuctionsTask {
           if (!this.#lastUpdated || lastUpdated > this.#lastUpdated) {
             this.#lastUpdated = lastUpdated;
 
-            const filteredAuctions = auctions.filter(auction => auction.bin);
+            const filteredAuctions = auctions
+              .filter(auction => auction.bin)
+              .map(auction => ({
+                auction_id: auction.uuid,
+                price: auction.starting_bid,
+                item_bytes: auction.item_bytes,
+                bin: auction.bin,
+              }));
 
             log.info(`Found ${filteredAuctions.length} auctions.`);
 
@@ -57,6 +71,8 @@ export class SearchAuctionsTask {
             const profitableAuctions = await searchProfitController.handle({
               raw_auctions: filteredAuctions,
             });
+
+            console.table(profitableAuctions);
 
             this.#socket.emit('NEW_AUCTIONS', profitableAuctions);
           }

@@ -1,4 +1,4 @@
-import { RawAuction } from '@modules/auctions/useCases/insertAuctionsUseCase/InsertAuctionsController';
+import { RawAuction } from '@modules/auctions/data/RawAuction';
 import { Auction } from '@prisma/client';
 
 import { convert } from './convertBytesToNBT';

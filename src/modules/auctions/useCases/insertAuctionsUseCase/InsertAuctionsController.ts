@@ -1,15 +1,9 @@
+import { RawAuction } from '@modules/auctions/data/RawAuction';
 import { transformAll } from '@utils/convertRawToAuction';
 import log from 'log-beautify';
 import { container } from 'tsyringe';
 
 import { InsertAuctionsUseCase } from './InsertAuctionsUseCase';
-
-export type RawAuction = {
-  auction_id: string;
-  bin: boolean;
-  price: number;
-  item_bytes: string;
-};
 
 interface IRequest {
   auctions: RawAuction[];
@@ -21,7 +15,7 @@ export class InsertAuctionsController {
 
     const auctions = await transformAll(
       raw_auctions.filter(raw => {
-        return raw.bin && raw.price >= 500000;
+        return raw.price >= 500000;
       }),
     );
 
